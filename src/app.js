@@ -66,7 +66,41 @@ app.get("/feed", async(req,res)=>{
     }   
 });
 
+//Delete user by id
 
+app.delete("/user", async(req,res)=>{
+    const userId = req.body?.userId;
+    try{
+        const users = await User.findByIdAndDelete(userId);
+        if(users.length === 0){
+            res.status(406).send("user not found");
+        } else {
+            res.send("user deleted Successfully..!");
+        }
+    } 
+    catch(err){
+        res.status(400).send("Error Getting the User detail");
+    }   
+});
+
+//Update by User id
+app.patch("/user", async(req,res)=>{
+    const userId = req.body?.userId;
+    const data = req.body;
+    try{
+        const users = await User.findByIdAndUpdate(userId,data,{
+            returnDocument: "after"
+        });
+        if(users.length === 0){
+            res.status(406).send("user not found");
+        } else {
+            res.send("user updated Successfully..!");
+        }
+    } 
+    catch(err){
+        res.status(400).send("Error Getting the User detail");
+    }   
+});
 
 connectDB().then(()=>{
     console.log("Database connected established..!");
