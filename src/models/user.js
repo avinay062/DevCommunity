@@ -34,7 +34,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         //required : true
         minLength: 8,
-        maxlength: 12,
         trim: true,
         validate(value){
             if(!validator.isStrongPassword(value)){
@@ -48,7 +47,6 @@ const userSchema = new mongoose.Schema({
         maxlength: 3,
         trim: true,
         min: 18,
-        required : true
     },
     gender: {
         type: String,
@@ -63,11 +61,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "common Photo URL",
         trim: true,
-        validate(value){
-            if(!validator.isURL(value)){
-                throw new Error("Invalid Photo URL: " + value);
-            }
-        }
+        // validate(value){
+        //     if(!validator.isURL(value)){
+        //         throw new Error("Invalid Photo URL: " + value);
+        //     }
+        // }
     },
     about: {
         type: String,
