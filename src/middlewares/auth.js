@@ -1,24 +1,31 @@
-const adminAuth = (req,res,next)=>{
-    const token = "xyzkjkjk";
-    const isAdmin = token === 'xyz';
-    if(!isAdmin){
-        res.status(401).send("User is not Authorized !");
-    } else {
-        next();
-    }
-}
+//Middleware for user Auth
+const User = require('../models/user');
+const jwt = require('jsonwebtoken');
 
-const userAuth = (req,res,next)=>{
-    const token = "xyz";
-    const isUser = token === 'xyz';
-    if(!isUser){
-        res.status(401).send("User is not Authorized !");
-    } else {
+const userAuth = async (req,res,next)=>{
+    try{
+        //read the token from the req cookies
+        const { token } = req.cookies;
+
+        if(!token){
+            throw new Error("Token is Invalid !!")
+        }
+
+        const decodedObj = await jwt.verify(token, "DEV@COMP$05");
+        const { _id } = decodedObj;
+        const user = await User.findById(_id);
+
+        if(!user){
+            throw new Error("User not found");
+        }
+
+        req.user = user;
         next();
+    } catch(err){
+        res.status(400).send("ERROR: "+ err.message);
     }
 }
 
 module.exports = {
-    adminAuth,
     userAuth
 }
