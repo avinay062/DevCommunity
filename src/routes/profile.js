@@ -16,18 +16,21 @@ profileRouter.get("/profile/view", userAuth, async (req, res) => {
 
 });
 
+// edit profile data
+
 profileRouter.patch("/profile/edit", userAuth, async(req,res)=>{
     try{
         if(!validateEditProfileData(req)){
             throw new Error("Invalid Edit Request");
         } else {
             const loggedInUser = req.user;
-            console.log(loggedInUser);
 
+            //patching request data in loggedInUserData
             Object.keys(req.body).forEach(key=> (loggedInUser[key] = req.body[key]));
 
-            console.log(loggedInUser);
+            //saving in DB
             await loggedInUser.save();
+            
             //res.send(`${loggedInUser.firstName}, your profile is Updated !!`);
             res.json({ message : `${loggedInUser.firstName}, your profile is Updated !!` , data : loggedInUser});
         }
@@ -36,7 +39,13 @@ profileRouter.patch("/profile/edit", userAuth, async(req,res)=>{
     } catch(err){
         res.status(400).send("ERROR: " + err.message);
     }
-})
+});
+
+//forgot password
+
+profileRouter.patch("/profile/password", async(req,res)=>{
+   //it will take existing and new password,
+});
 
 
 

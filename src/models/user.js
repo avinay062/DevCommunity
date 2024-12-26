@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
         //required : true
         //minLength: 3,
         //maxlength: 10,
+        //index: true,
         trim: true
     },
     lastName: {
@@ -22,7 +23,7 @@ const userSchema = new mongoose.Schema({
     emailId: {
         type: String,
         //required : true
-        unique: true,
+        unique: true, // gives auto index
         lowercase: true,
         maxLength: 30,
         trim: true,
@@ -79,10 +80,12 @@ const userSchema = new mongoose.Schema({
     },
 },
     {
-        timestamps: true
+        timestamps: true  // mongo db will add the timestamps, created/modified date
     });
 
-// ofloads creating JWT token
+  userSchema.index({firstName : 1});
+
+// offloads creation of JWT token
 userSchema.methods.getJWT = async function () {
     const user = this;
 

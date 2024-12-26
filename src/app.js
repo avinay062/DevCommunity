@@ -10,15 +10,17 @@ const cookieParser = require("cookie-parser");
 app.use(express.json()); // middleware by express.js for reading the data and parsing it to json
 app.use(cookieParser()); // middleware by express.js for reading the cookie
 
-
+// All API routes
 const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/requests");
+const userRouter = require("./routes/user");
 
 
 app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", requestRouter);
+app.use("/", userRouter);
 
 
 
