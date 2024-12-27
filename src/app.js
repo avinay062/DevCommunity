@@ -4,9 +4,12 @@ const app = express(); // instance of an express js application
 
 const connectDB = require("./config/database");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
-
-
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true
+}));
 app.use(express.json()); // middleware by express.js for reading the data and parsing it to json
 app.use(cookieParser()); // middleware by express.js for reading the cookie
 
