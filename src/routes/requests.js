@@ -75,8 +75,6 @@ requestsRouter.post("/request/review/:status/:requestId", userAuth, async(req, r
             return res.status(400).send("Invalid Status !!");
         }
 
-        console.log(requestId,loggedInUser.firstName)
-
         const connectionRequest = await ConnectionRequest.findOne({
             _id: requestId,
             toUserId : loggedInUser,
