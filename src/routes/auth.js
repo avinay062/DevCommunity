@@ -22,8 +22,17 @@ authRouter.post("/signup", async (req, res) => {
             password: passwordhash
         });
 
-        await user.save();
-        res.send("User is Added Successfully..!");
+        const savedUser = await user.save();
+        const isPasswordvalid = await user.validatePassword(password);
+        if (isPasswordvalid) {
+            //create a JWT token
+            const token = await savedUser.getJWT();
+            res.cookie('token', token, { expires : new Date( Date.now() + 8 * 3600000)});
+            res.json({message: "User is Added Successfully..!", data: savedUser});
+        } else {
+            throw new Error("Invalid Credentials");
+        }
+        
     } catch (err) {
         res.status(400).send("Error Saving the User: " + err.message);
     }
