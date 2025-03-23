@@ -6,8 +6,11 @@ const connectDB = require("./config/database");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
+// Add port configuration
+const PORT = process.env.PORT || 3000;
+
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: true, // This accepts all origins but maintains the security checks
     credentials: true
 }));
 app.use(express.json()); // middleware by express.js for reading the data and parsing it to json
@@ -30,8 +33,8 @@ app.use("/", userRouter);
 connectDB().then(() => {
     console.log("Database connected established..!");
     //to listen the server
-    app.listen(3000, () => {
-        console.log("Server is successfully listening on port 3000 !")
+    app.listen(PORT, () => {
+        console.log(`Server is successfully listening on port ${PORT} !`)
     });
 })
     .catch((err) => {
