@@ -1,4 +1,6 @@
 const express = require("express");
+const swaggerUI = require('swagger-ui-express');
+const swaggerJsDoc = require('swagger-jsdoc');
 
 const app = express(); // instance of an express js application
 
@@ -8,6 +10,28 @@ const cors = require("cors");
 
 // Add port configuration
 const PORT = process.env.PORT || 3000;
+
+// Swagger configuration
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Dev Community API',
+            version: '1.0.0',
+            description: 'A Dev Community API Documentation',
+        },
+        servers: [
+            {
+                url: `http://localhost:${PORT}`,
+                description: 'Development server',
+            },
+        ],
+    },
+    apis: ['./src/routes/*.js'], // Path to the API routes
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 app.use(cors({
     origin: true, // This accepts all origins but maintains the security checks
