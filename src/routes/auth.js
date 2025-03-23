@@ -4,7 +4,90 @@ const { validateSignupData } = require("../utils/validation");
 const User = require("../models/user");
 const bcrypt = require('bcryptjs');
 
-
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required:
+ *         - firstName
+ *         - lastName
+ *         - emailId
+ *         - password
+ *       properties:
+ *         firstName:
+ *           type: string
+ *           description: User's first name
+ *         lastName:
+ *           type: string
+ *           description: User's last name
+ *         emailId:
+ *           type: string
+ *           description: User's email address
+ *         password:
+ *           type: string
+ *           description: User's password
+ * 
+ * /signup:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *     responses:
+ *       200:
+ *         description: User registered successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Invalid input or email already exists
+ * 
+ * /login:
+ *   post:
+ *     summary: Login to the application
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - emailId
+ *               - password
+ *             properties:
+ *               emailId:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *       400:
+ *         description: Invalid credentials
+ * 
+ * /logout:
+ *   post:
+ *     summary: Logout from the application
+ *     tags: [Auth]
+ *     security:
+ *       - cookieAuth: []
+ *     responses:
+ *       200:
+ *         description: Logged out successfully
+ */
 
 //POST API for signup
 authRouter.post("/signup", async (req, res) => {

@@ -5,6 +5,78 @@ const ConnectionRequest = require("../models/connectionRequest");
 const User = require("../models/user");
 const ConnectionRequestModel = require("../models/connectionRequest");
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     ConnectionRequest:
+ *       type: object
+ *       properties:
+ *         fromUserId:
+ *           type: string
+ *         toUserId:
+ *           type: string
+ *         status:
+ *           type: string
+ *           enum: [interested, ignored, accepted, rejected]
+ * 
+ * /request/send/{status}/{toUserId}:
+ *   post:
+ *     summary: Send a connection request
+ *     tags: [Requests]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: status
+ *         required: true
+ *         schema:
+ *           type: string
+ *           enum: [interested, ignored]
+ *         description: Status of the connection request
+ *       - in: path
+ *         name: toUserId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the user to send request to
+ *     responses:
+ *       200:
+ *         description: Request sent successfully
+ *       400:
+ *         description: Invalid request
+ *       404:
+ *         description: User not found
+ * 
+ * /request/review/{status}/{requestId}:
+ *   post:
+ *     summary: Review a connection request
+ *     tags: [Requests]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: status
+ *         required: true
+ *         schema:
+ *           type: string
+ *           enum: [accepted, rejected]
+ *         description: Decision on the request
+ *       - in: path
+ *         name: requestId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the connection request
+ *     responses:
+ *       200:
+ *         description: Request reviewed successfully
+ *       400:
+ *         description: Invalid status
+ *       404:
+ *         description: Request not found
+ */
+
 //sending connection request
 
 requestsRouter.post("/request/send/:status/:toUserId", userAuth, async(req,res)=>{
